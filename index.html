@@ -5,12 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Brief — catch what matters</title>
 <meta name="description" content="Brief is coming soon. Catch what matters.">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <style>
   :root {
     --fg: #1a1a1a;
     --muted: #5b6470;
     --bg: #fafaf7;
-    --accent: #1a1a1a;
+    --accent: #0a2f6e;
     --border: #e2e2dc;
   }
   * { box-sizing: border-box; }
@@ -32,12 +35,12 @@
     width: 100%;
     text-align: center;
   }
-  .wordmark {
-    font-size: 14px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 32px;
+  .lockup {
+    display: block;
+    margin: 0 auto 28px;
+    width: 280px;
+    max-width: 80%;
+    height: auto;
   }
   h1 {
     font-size: clamp(32px, 5vw, 44px);
@@ -102,7 +105,7 @@
 </head>
 <body>
 <main>
-  <div class="wordmark">Brief</div>
+  <img class="lockup" src="/assets/lockup.png" alt="justbriefme — Catch what matters" width="800" height="205">
   <h1>Catch what matters.</h1>
   <p class="sub">A new way to stay on top of what's important — coming soon.</p>
   <form id="signup" novalidate>
