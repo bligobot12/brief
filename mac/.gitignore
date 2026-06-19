@@ -1,0 +1,11 @@
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+
+# Swift Package Manager local state
+.swiftpm/
+.build/
+
+# Derived data
+DerivedData/
