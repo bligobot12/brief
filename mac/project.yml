@@ -3,7 +3,7 @@ name: Brief
 options:
   bundleIdPrefix: app.justbriefme
   deploymentTarget:
-    macOS: "13.0"
+    macOS: "14.0"
   createIntermediateGroups: true
   defaultConfig: Debug
   generateEmptyDirectories: true
