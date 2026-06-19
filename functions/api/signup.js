@@ -1,4 +1,4 @@
-export async function onRequestPost({ request }) {
+export async function onRequestPost({ request, env }) {
   let payload;
   try {
     payload = await request.json();
@@ -9,21 +9,45 @@ export async function onRequestPost({ request }) {
     });
   }
 
-  const email = typeof payload?.email === 'string' ? payload.email.trim() : '';
-  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  if (!ok) {
+  const email = typeof payload?.email === 'string'
+    ? payload.email.trim().toLowerCase()
+    : '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return new Response(JSON.stringify({ error: 'invalid_email' }), {
       status: 400,
       headers: { 'content-type': 'application/json' },
     });
   }
 
+  const sbRes = await fetch(`${env.SUPABASE_URL}/rest/v1/waitlist_emails`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+      authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      Prefer: 'resolution=ignore-duplicates,return=minimal',
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!sbRes.ok) {
+    const detail = await sbRes.text();
+    console.error(JSON.stringify({
+      event: 'brief_signup_supabase_error',
+      status: sbRes.status,
+      detail,
+      ts: new Date().toISOString(),
+    }));
+    return new Response(JSON.stringify({ error: 'storage_failed' }), {
+      status: 502,
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+
   console.log(JSON.stringify({
     event: 'brief_signup',
-    email,
+    status: sbRes.status,
     ts: new Date().toISOString(),
-    ip: request.headers.get('cf-connecting-ip') || null,
-    ua: request.headers.get('user-agent') || null,
   }));
 
   return new Response(JSON.stringify({ ok: true }), {
